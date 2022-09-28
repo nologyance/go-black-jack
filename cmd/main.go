@@ -3,6 +3,7 @@ package main
 import (
 	"black-jack/controller"
 	"black-jack/repository"
+	"log"
 	"net/http"
 )
 
@@ -12,5 +13,8 @@ var ro = controller.NewRouter(pc)
 
 func main() {
 	http.HandleFunc("/player/new", ro.HandlePlayerRequest)
-	http.ListenAndServe(":8080", nil)
+	err := http.ListenAndServe(":8080", nil)
+	if (err != nil) {
+		log.Fatal(err)
+	}
 }
