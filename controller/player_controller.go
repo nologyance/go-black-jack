@@ -6,7 +6,7 @@ import (
 )
 
 type PlayerController interface {
-	PostPlayer(w http.ResponseWriter, r *http.Request)
+	HandlePlayerRequest(w http.ResponseWriter, r *http.Request)
 }
 
 type playerContoller struct {
@@ -15,6 +15,17 @@ type playerContoller struct {
 
 func NewPlayerController(pr repository.PlayerRepository) PlayerController {
 	return &playerContoller{pr}
+}
+
+func (pc *playerContoller) HandlePlayerRequest(w http.ResponseWriter, r *http.Request) {
+    switch r.Method {
+    case "GET":
+        w.WriteHeader(200)
+    case "POST":
+        pc.PostPlayer(w, r)
+    default:
+        w.WriteHeader(405)
+    }
 }
 
 func (pc *playerContoller) PostPlayer(w http.ResponseWriter, r *http.Request) {

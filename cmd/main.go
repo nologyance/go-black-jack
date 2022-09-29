@@ -9,10 +9,9 @@ import (
 
 var pr = repository.NewPlayerRepository()
 var pc = controller.NewPlayerController(pr)
-var ro = controller.NewRouter(pc)
 
 func main() {
-	http.HandleFunc("/player/new", ro.HandlePlayerRequest)
+	http.Handle("/player/new", http.HandlerFunc(pc.HandlePlayerRequest))
 	err := http.ListenAndServe(":8080", nil)
 	if (err != nil) {
 		log.Fatal(err)
