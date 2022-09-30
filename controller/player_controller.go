@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"black-jack/entity"
 	"black-jack/repository"
 	"net/http"
 )
@@ -20,6 +21,7 @@ func NewPlayerController(pr repository.PlayerRepository) PlayerController {
 func (pc *playerContoller) HandlePlayerRequest(w http.ResponseWriter, r *http.Request) {
     switch r.Method {
     case "GET":
+		pc.pr.InsertPlayer(entity.PlayerEntity{})
         w.WriteHeader(200)
     case "POST":
         pc.PostPlayer(w, r)
