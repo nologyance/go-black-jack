@@ -20,10 +20,10 @@ func NewPlayerController(pr repository.PlayerRepository) PlayerController {
 
 func (pc *playerContoller) HandlePlayerRequest(w http.ResponseWriter, r *http.Request) {
     switch r.Method {
-    case "GET":
+    case http.MethodGet:
 		pc.pr.InsertPlayer(entity.PlayerEntity{})
         w.WriteHeader(200)
-    case "POST":
+    case http.MethodPost:
         pc.PostPlayer(w, r)
     default:
         w.WriteHeader(405)
