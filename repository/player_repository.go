@@ -28,16 +28,12 @@ func (pr *playerRepository) InsertPlayer(player entity.PlayerEntity) (id int, er
 
 	defer conn.Close(context.Background())
 
-	var i int
-	var name string
+	sql := ("insert into player (id, name) values($1, $2)")
 
-	err = conn.QueryRow(context.Background(), "select * from player;").Scan(&i, &name)
+	_, err = conn.Exec(context.Background(), sql, player.Id, player.Name)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "QueryRow failed: %v\n", err)
+		fmt.Fprintf(os.Stderr, "insert failed: %v\n", err)
 		os.Exit(1)
 	}
-
-	fmt.Println(i)
-	fmt.Println(name)
 	return
 }

@@ -1,0 +1,71 @@
+openapi: 3.0.3
+info:
+  title: go-blackjack
+  version: 0.0.1
+servers:
+  - url: http://localhost:8080
+paths:
+  /player:
+    post:
+      summary: プレイヤーの作成
+      description: 新たなプレイヤーを作成します
+      operationId: createPlayer
+      requestBody:
+        $ref: '#/components/requestBodies/CreatePlayer'
+      responses:
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Pet not found
+        '405':
+          description: Validation exception
+components:
+  #-------------------------------
+  # Reusable schemas
+  #-------------------------------
+  schemas:
+    PlayerModel:
+      description: User model
+      required:
+        - id
+        - name
+      type: object
+      properties:
+        id:
+          title: User id
+          type: integer
+          example: 1
+        name:
+          title: User name
+          type: string
+          example: namiki
+    ErrorModel:
+      description: Response Error Model.
+      required:
+        - code
+        - message
+      type: object
+      properties:
+        code:
+          title: error code
+          type: string
+          example: 500
+        message:
+          title: error message
+          type: string
+          example: Internal Server Error.
+          
+  #-------------------------------
+  # Reusable request body
+  #-------------------------------
+  requestBodies:
+    CreatePlayer:
+      description: user data
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PlayerModel'
+  #-------------------------------
+  # Reusable responses
+  #-------------------------------

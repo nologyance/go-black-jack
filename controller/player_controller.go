@@ -3,7 +3,9 @@ package controller
 import (
 	"black-jack/entity"
 	"black-jack/repository"
+	"encoding/json"
 	"net/http"
+	"strconv"
 )
 
 type PlayerController interface {
@@ -31,15 +33,16 @@ func (pc *playerContoller) HandlePlayerRequest(w http.ResponseWriter, r *http.Re
 }
 
 func (pc *playerContoller) PostPlayer(w http.ResponseWriter, r *http.Request) {
-	// body := make([]byte, r.ContentLength)
-	// r.Body.Read(body)
-	// var playerRequest dto.PlayerRequest
-	// json.Unmarshal(body, &playerRequest)
-
-	// player := entity.PlayerEntity{}
-
-	// // insert
-
-	// w.Header().Set("Location", r.Host+r.URL.Path+strconv.Itoa(1))
+	player := pc.decode(r)
+	pc.pr.InsertPlayer(player)
+	w.Header().Set("Location", r.Host+r.URL.Path+strconv.Itoa(player.Id))
 	w.WriteHeader(201)
+}
+
+func (pc *playerContoller) decode(r *http.Request) entity.PlayerEntity {
+	body := make([]byte, r.ContentLength)
+	r.Body.Read(body)
+	var playerRequest PlayerRequest
+	json.Unmarshal(body, &playerRequest)
+	return entity.PlayerEntity(playerRequest)
 }
