@@ -3,17 +3,16 @@ package main
 import (
 	"black-jack/controller"
 	"black-jack/repository"
-	"log"
-	"net/http"
+
+	"github.com/labstack/echo"
 )
 
 var pr = repository.NewPlayerRepository()
 var pc = controller.NewPlayerController(pr)
 
 func main() {
-	http.Handle("/player", http.HandlerFunc(pc.HandlePlayerRequest))
-	err := http.ListenAndServe(":8080", nil)
-	if (err != nil) {
-		log.Fatal(err)
-	}
+	e := echo.New()
+	e.GET("/players", echo.HandlerFunc(pc.GetPlayers))
+	e.POST("/players", echo.HandlerFunc(pc.PostPlayer))
+	e.Logger.Fatal(e.Start(":8080"))
 }

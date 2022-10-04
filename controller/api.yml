@@ -5,7 +5,7 @@ info:
 servers:
   - url: http://localhost:8080
 paths:
-  /player:
+  /players:
     post:
       summary: プレイヤーの作成
       description: 新たなプレイヤーを作成します
@@ -13,6 +13,12 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/CreatePlayer'
       responses:
+        '201':
+          description: Created
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlayerModel'
         '400':
           description: Invalid ID supplied
         '404':
